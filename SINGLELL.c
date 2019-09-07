@@ -20,7 +20,7 @@ struct Node
 	int dat;
 	struct Node *next;
 };
-/* Creates and Returns a New Node */
+/* Allocates memory dynamically and returns a new node */
 struct Node* new_node(int value)
 {
 	struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
