@@ -8,6 +8,7 @@
 3. Add at begining of a circular list
 4. Add after specified node
 5. Check whether the list is Circular or Not
+6. Delete a given key
  */
 
 #include <stdio.h>
@@ -86,6 +87,41 @@ struct Node *addAfter(struct Node *last, int value, int item)
  } while (p != last->next);
  printf("\n%d is not present in the list", item);
  return last;
+}
+void deleteNode(struct Node** head, int key)
+{
+ struct Node* temp = *head;	
+ if (temp == NULL)
+	return;
+	
+ if (temp->dat == key && temp->next == *head)
+ {
+	free(temp);
+	temp = NULL;
+ }
+
+ struct Node *last = *head, *toDel;
+ if (temp->dat == key)
+ {		
+ 	while (last->next != temp)
+		last = last->next;
+
+	last->next = temp->next;
+	free(temp);
+	temp = last->next;
+ }
+ while (last->next != *head && last->next->dat != key)
+ {
+	last = last->next;
+ }
+ if (last->next->dat == key)
+ {
+	toDel = last->next;
+	last->next = toDel->next;
+	free(toDel);
+ }
+ else
+	printf("\nKey Not Found !!! \n\n");
 }
 void printList(struct Node *last)
 {
