@@ -160,7 +160,7 @@ int main()
  last = addEnd(last, 8);
  last = addEnd(last, 12);
  last = addAfter(last, 10, 8);
-	
+ deleteNode(&last, 20);
  if (isCircular(&last))
 	printf("\nCircular LL\n");
  else
