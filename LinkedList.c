@@ -61,16 +61,17 @@ void addAtPos(struct Node** head, int pos, int value)
 }
 void addMiddle(struct Node** head, int value)
 {
-	struct Node* ptr1 = *head;
-	struct Node* ptr2 = *head;
 	struct Node* newnode = newNode(value);
-	while (ptr1 && ptr2 && ptr2->next)
+	struct Node* slow = *head;
+	struct Node* fast = (*head)->next;
+
+	while (slow && fast->next)
 	{
-		ptr1 = ptr1->next;
-		ptr2 = ptr2->next->next;
+		slow = slow->next;
+		fast = fast->next->next;
 	}
-	newnode->next = ptr1->next;
-	ptr1->next = newnode;
+	newnode->next = slow->next;
+	slow->next = newnode;
 }
 void addAfter(struct Node** head, int after, int value)
 {
