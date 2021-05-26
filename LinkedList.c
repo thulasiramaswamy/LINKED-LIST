@@ -65,7 +65,7 @@ void addMiddle(struct Node** head, int value)
 	struct Node* slow = *head;
 	struct Node* fast = (*head)->next;
 
-	while (slow && fast->next)
+	while (slow && fast && fast->next)
 	{
 		slow = slow->next;
 		fast = fast->next->next;
