@@ -5,7 +5,6 @@ struct Node
 	int dat;
 	struct Node* next;
 };
-struct Node* head = NULL;
 struct Node* newNode(int value)
 {
 	struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
@@ -35,25 +34,22 @@ void printList(struct Node* head)
 		temp = temp->next;
 	}
 }
-void RecursiveReverse(struct Node* p)
+struct Node* recursiveReverse(struct Node* head)
 {
- if(p->next == NULL)
- {
-  head = p;
-  return;
- }
- reverseRecur(p->next);
- struct Node* q = p->next;
- q->next = p;
- p->next = NULL;
+	if (head == NULL || head->next == NULL) return head;
+	struct Node* rest = recursiveReverse(head->next);
+	head->next->next = head;
+	head->next = NULL;
+	return rest;
 }
-
 int main(void)
 {
+	struct Node* head = NULL;
 	int i, arr[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	for (i = 0; i < sizeof(arr) / sizeof(int); i++)
 		create(&head, arr[i]);	
-	RecursiveReverse(head);
+	printList(head);
+	head = recursiveReverse(head);
 	printList(head);
 	getchar();
 	return 0;
