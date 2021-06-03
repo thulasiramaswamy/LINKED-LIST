@@ -63,6 +63,39 @@ void addAtPosition(struct Node** head, int Pos, int value)
 	newnode->prev = temp;
 	temp->next = newnode;
 }
+/* returns element in nth position from the end */
+int getNthNodeFromEnd(struct Node** head, int N)
+{
+	struct Node* ptr1 = *head;
+	struct Node* ptr2 = *head;
+	int i = 0;
+	while (i < N)
+	{
+		i++;
+		ptr1 = ptr1->next;
+	}
+	while (ptr1 && ptr2)
+	{
+		ptr1 = ptr1->next;
+		ptr2 = ptr2->next;
+	}
+	return ptr2->dat;
+}
+/* Reverse the list */
+void reverse(struct Node** head)
+{
+	struct Node* curr = *head;
+	struct Node* temp = NULL;
+	while (curr != NULL)
+	{
+		temp = curr->prev;
+		curr->prev = curr->next;
+		curr->next = temp;
+		curr = curr->prev;
+	}
+	if (temp != NULL)
+		*head = temp->prev;
+}
 /* Prints the elements in the List */
 void printList(struct Node* head)
 {
