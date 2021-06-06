@@ -9,164 +9,116 @@
 4. Add after specified node
 5. Check whether the list is Circular or Not
 6. Delete a given key
- */
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Node structure */
+/*
+* Node Structure
+*/
 struct Node
 {
- int data;
- struct Node *next;
+	int dat;
+	struct Node* next;
 };
-/* returns a new node */
-struct Node* newNode(int value)
+
+/*
+*  Create a Node when the List is Empty
+*/
+struct Node* addToEmpty(int value)
 {
- struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
- temp->data = value;
- temp->next = NULL;
- return temp;
+	struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+	temp->dat = value;
+	temp->next = temp;
+	return temp;
 }
-
-/* Adds a Node to an Empty List */
-struct Node *addToEmpty(struct Node *last, int value)
+/*
+* Add an element at the Begining of the List
+*/
+struct Node* addAtBeg(struct Node* tail, int value)
 {
- if (last != NULL)
- 	return last;
-
- last = newNode(value);	
- last->next = last;
- return last;
+	struct Node* newnode = (struct Node*)malloc(sizeof(struct Node));
+	newnode->dat = value;
+	newnode->next = tail->next;
+	tail->next = newnode;
+	return tail;
 }
-
-/* Adds a Node at the begining of the List */
-struct Node *addBegin(struct Node *last, int value)
+/*
+* Add an element at the End of the List
+*/
+struct Node* addAtEnd(struct Node* tail, int value)
 {
- if (last == NULL)
- 	return addToEmpty(last, value);
-
- struct Node* temp = newNode(value);	
-
- temp->next = last->next;
- last->next = temp;
- return last;
+	if (tail == NULL)
+		return addToEmpty(tail, value);
+	struct Node* newnode = (struct Node*)malloc(sizeof(struct Node));
+	newnode->dat = value;
+	newnode->next = tail->next;
+	tail->next = newnode;
+	tail = tail->next;
+	return tail;
 }
-
-/* Adds a Node at the end of the List */
-struct Node *addEnd(struct Node *last, int value)
+/*
+* Add an element at the Specified Position of the List
+*/
+struct Node* addAtPos(struct Node* tail, int value, int Pos)
 {
-	if (last == NULL)
-		return addToEmpty(last, value);
-	
-	struct Node* temp = newNode(value);
-	temp->next = last->next;
-	last->next = temp;	
-	last = temp;	
-	return last;
+	struct Node* p = tail->next;
+	struct Node* newnode = (struct Node*)malloc(sizeof(struct Node));
+	newnode->dat = value;
+	int i;
+	for (i = 0; i < Pos - 2; i++)
+		p = p->next;
+
+	newnode->next = p->next;
+	p->next = newnode;
+
+	if (p == tail)
+		tail = tail->next;
+	return tail;
 }
-struct Node *addAfter(struct Node *last, int value, int item)
+/*
+* Prints the elements in the List
+*/
+void printList(struct Node* tail)
 {
- if (last == NULL)
-	return NULL;
-
- struct Node *temp, *p;
- p = last->next;
- do
- {
-	if (p->data == item)
+	if (tail == NULL) { printf("List is empty !!! ");  return; }
+	struct Node* p = tail->next;
+	do
 	{
-		temp = newNode(value);
-		temp->next = p->next;
-		p->next = temp;
-
-		if (p == last)	last = temp;
-		return last;
-	}
-	p = p->next;
- } while (p != last->next);
- printf("\n%d is not present in the list", item);
- return last;
+		printf(" %d ", p->dat);
+		p = p->next;
+	} while (p != tail->next);
 }
-void deleteNode(struct Node** head, int key)
+/*
+* Prints the Size of the List
+*/
+void size(struct Node* tail)
 {
- struct Node* temp = *head;	
- if (temp == NULL)
-	return;
-	
- if (temp->dat == key && temp->next == *head)
- {
-	free(temp);
-	temp = NULL;
- }
-
- struct Node *last = *head, *toDel;
- if (temp->dat == key)
- {		
- 	while (last->next != temp)
-		last = last->next;
-
-	last->next = temp->next;
-	free(temp);
-	temp = last->next;
- }
- while (last->next != *head && last->next->dat != key)
- {
-	last = last->next;
- }
- if (last->next->dat == key)
- {
-	toDel = last->next;
-	last->next = toDel->next;
-	free(toDel);
- }
- else
-	printf("\nKey Not Found !!! \n\n");
+	if (tail == NULL) { printf("List is empty !!! ");  return; }
+	struct Node* p = tail->next;
+	int Cnt = 0;
+	do
+	{
+		p = p->next;
+		Cnt++;
+	} while (p != tail->next);
+	printf("\nSize of the List : %d\n", Cnt);
 }
-void printList(struct Node *last)
+/*
+* Driver Function
+*/
+int main(void)
 {
- struct Node *p;
- if (last == NULL) 
- { 
-	printf("\n List is empty"); 
-	return; 
- }
- p = last->next;
- do	
- { 
- 	printf(" %d", p->data);	
-	p = p->next; 
- } while (p != last->next);
-}
-// Store head of the linked list and traverse it.
-// If we reach NULL, linked list is not circular.
-// If reach head again, linked list is circular
-int isCircular(struct Node** head)
-{
- if (*head == NULL) return 1;
- struct Node* temp = *head;
- while (temp != NULL && temp != *head)
- 	temp = temp->next;
- return (temp == *head);
-}
-int main()
-{
- struct Node *last = NULL;
-
- last = addToEmpty(last, 6);
- last = addBegin(last, 4);
- last = addBegin(last, 2);
-
- last = addEnd(last, 8);
- last = addEnd(last, 12);
- last = addAfter(last, 10, 8);
- deleteNode(&last, 20);
- if (isCircular(&last))
-	printf("\nCircular LL\n");
- else
-	printf("\n Not a Circular LL\n");
-
- printList(last);
- printf("\n\n");
- return 0;
+	struct Node* tail;
+	tail = addToEmpty(10);
+	tail = addAtBeg(tail, 5);
+	tail = addAtEnd(tail, 15);
+	tail = addAtEnd(tail, 20);
+	tail = addAtEnd(tail, 25);
+	tail = addAtEnd(tail, 30);
+	tail = addAtPos(tail, 18, 3);
+	printList(tail);
+	size(tail);
+	return 0;
 }
