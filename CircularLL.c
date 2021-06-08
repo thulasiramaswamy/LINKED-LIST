@@ -8,7 +8,8 @@
 3. Add at begining of a circular list
 4. Add after specified node
 5. Check whether the list is Circular or Not
-6. Delete a given key
+6. Delete element at First Position
+7. Delete element at Last Position
 */
 
 #include <stdio.h>
