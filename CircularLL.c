@@ -78,6 +78,44 @@ struct Node* addAtPos(struct Node* tail, int value, int Pos)
 	return tail;
 }
 /*
+* Deletes the Last Element in the List
+*/
+struct Node* delLast(struct Node* tail)
+{
+	if (tail == NULL) return tail;
+	struct Node* temp = tail->next;
+	if (tail->next == tail)
+	{
+		free(tail);
+		tail = NULL;
+		return tail;
+	}
+	while (temp->next != tail)
+		temp = temp->next;
+	temp->next = tail->next;
+	free(tail);
+	tail = temp;
+	return tail;
+}
+/*
+* Deletes the First Element in the List
+*/
+struct Node* delFirst(struct Node* tail)
+{
+	if (tail == NULL) return tail;
+	if (tail->next == tail)
+	{
+		free(tail);
+		tail = NULL;
+		return tail;
+	}
+	struct Node* temp = tail->next;
+	tail->next = temp->next;
+	free(temp);
+	temp = NULL;
+	return tail;
+}
+/*
 * Prints the elements in the List
 */
 void printList(struct Node* tail)
@@ -118,6 +156,8 @@ int main(void)
 	tail = addAtEnd(tail, 25);
 	tail = addAtEnd(tail, 30);
 	tail = addAtPos(tail, 18, 3);
+	tail = delLast(tail);
+	tail = delFirst(tail);
 	printList(tail);
 	size(tail);
 	return 0;
